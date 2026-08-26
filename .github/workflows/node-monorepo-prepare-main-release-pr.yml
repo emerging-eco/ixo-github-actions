@@ -26,6 +26,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # pnpm >= 11 requires Node >= 22.13 (it loads node:sqlite); without this
+      # step the job runs on the runner's default Node, which broke when that
+      # default was 20.
+      - name: "Setup Node 24"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
       - name: "Setup Pnpm 10.0"
         uses: pnpm/action-setup@v2
         with:
