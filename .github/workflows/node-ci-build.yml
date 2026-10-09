@@ -100,6 +100,12 @@ jobs:
           cache: ${{ inputs.package_manager }}
           cache-dependency-path: ${{ format('{0}/{1}', inputs.root_path || '.', inputs.package_manager == 'pnpm' && 'pnpm-lock.yaml' || (inputs.package_manager == 'yarn' && 'yarn.lock' || 'package-lock.json')) }}
 
+      - name: Use Node.js ${{ matrix.node-version }} (bun)
+        uses: actions/setup-node@v3
+        if: ${{ inputs.package_manager == 'bun' }}
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - name: Install dependencies yarn
         if: ${{ inputs.package_manager == 'yarn' }}
         run: yarn install --frozen-lockfile
